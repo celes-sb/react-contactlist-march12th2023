@@ -22,44 +22,90 @@ const Contactos = () => {
     useEffect(() => { }, [lista, nombre])
 
 
-    return (<div>
-        Contactos
-        <br />
-        <Link to="/add-contact">Agregar un contacto</Link>
-        <br />
-        <input type="text" placeholder="nombreNuevo" onChange={(e) => setNombre(e.target.value)} />
-        <br />
-        <ul>
-            {lista && lista.length > 0 ? <>
-                {lista.map((item, index) => {
-                    return (
-                        <li key={index}>
-                            {item.full_name} - {item.email} - {item.phone}
-                            <button
-                                className="btn btn-warning"
-                                button="button"
-                                onClick={() => {
-                                    if (nombre == "") {
-                                        alert("Agregue un nombre")
-                                        return
-                                    }
-                                    actions.editContact(index, nombre)
-                                }}
-                            >
-                                Editar
-                            </button>
-                            <button
-                                className="btn btn-danger"
-                                type="button"
-                                onClick={() => { actions.deleteContact(index) }}>
-                                Eliminar Contacto
-                            </button>
-                        </li>
-                    )
-                })}
-            </> : <>No hay contactos</>}
-        </ul>
-    </div>)
+    return (<>
+        <div className="container-fluid ms-2">
+            <div className="row p-5">
+                <div className="col-md-12 d-flex justify-content-end">
+                    <button className="btn btn-success">
+                        <Link to="/add-contact" style={{ color: 'white' }}>Add a new contact</Link>
+                    </button>
+                </div>
+            </div>
+            <div className="row d-flex justify-content-center w-100">
+                <div className="col-12 col-md-8 col-lg-6 w-100 border">
+                    <ul className="list-group">
+                        {store.listaContactos && store.listaContactos.length > 0 ? (
+                            store.listaContactos.map((item, index) => {
+                                return (
+                                    <div className="row border-bottom py-3">
+                                        <div className="col-2">
+                                            <img className="img-thumbnail" src="https://cdn140.picsart.com/276225486010201.jpg?type=webp&to=crop&r=256"></img>
+                                        </div>
+                                        <div className="col-8">
+                                            <h3 className="mb-3">{item.full_name}</h3>
+                                            <p className="text-secondary"><i class="fa-solid fa-location-arrow"></i><span className="ms-3">{item.address}</span></p>
+                                            <p className="text-secondary"><i class="fa-solid fa-at"></i><span className="ms-3">{item.email}</span></p>
+                                            <p className="text-secondary"><i class="fa fa-phone-flip"></i><span className="ms-3">{item.phone}</span></p>
+                                        </div>
+                                        <div className="col-2 d-flex align-items-center justify-content-end">
+                                            <button
+                                                className="btn btn-lg text-success m-2"
+                                                button="button"
+                                                onClick={() => {
+                                                    let newName = newName;
+                                                    let newEmail = newEmail;
+                                                    let newPhoneNumber = newPhoneNumber;
+                                                    let newAddress = newAddress;
+
+                                                    const nameInput = prompt("Enter new name:", newName);
+                                                    if (nameInput !== null && nameInput.trim() !== "") {
+                                                        newName = nameInput;
+                                                    }
+
+                                                    const emailInput = prompt("Enter new email:", newEmail);
+                                                    if (emailInput !== null && emailInput.trim() !== "") {
+                                                        newEmail = emailInput;
+                                                    }
+
+                                                    const phoneNumberInput = prompt("Enter new phone number:", newPhoneNumber);
+                                                    if (phoneNumberInput !== null && phoneNumberInput.trim() !== "") {
+                                                        newPhoneNumber = phoneNumberInput;
+                                                    }
+
+                                                    const addressInput = prompt("Enter new address:", newAddress);
+                                                    if (addressInput !== null && addressInput.trim() !== "") {
+                                                        newAddress = addressInput;
+                                                    }
+
+                                                    actions.editContact(index, newName, newEmail, newPhoneNumber, newAddress);
+                                                }}
+                                            >
+                                                <i className="fa fa-pencil"></i>
+                                            </button>
+                                            <button
+                                                className="btn btn-lg m-2 text-danger"
+                                                type="button"
+                                                onClick={() => {
+                                                    if (window.confirm("Are you sure you want to delete this contact?")) {
+                                                        actions.deleteContact(index);
+                                                    }
+                                                }}
+                                            >
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <div className="text-center py-3">This contact list is empty</div>
+                        )}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </>)
 }
 
 export default Contactos;
