@@ -4,9 +4,15 @@ import { Link } from "react-router-dom";
 
 const AddContact = () => {
     const { store, actions } = useContext(Context)
-    const [data, setData] = useState({})
+    const [data, setData] = useState({
+        full_name: "Dave Bradley",
+        email: "dave@gmail.com",
+        agenda_slug: "agenda_de_antonio",
+        address: "47568 NW 34ST, 33434 FL, USA",
+        phone: "7864445566"
+    })
 
-    useEffect(() => { }, [data.full_name, data.phone, data.email])
+    useEffect(() => { }, [data.full_name, data.phone, data.email, data.address])
 
     return (
         <div className="container-fluid d-flex flex-column align-items-center p-5 w-100">
@@ -54,7 +60,7 @@ const AddContact = () => {
                     className="btn btn-sm mt-3 pb-2 btn-primary"
                     type="button"
                     onClick={() => {
-                        actions.addContact(data);
+                        actions.useFetch("/apis/fake/contact/", data, "POST");
                     }}
                 >
                     Save
@@ -71,7 +77,7 @@ const AddContact = () => {
                         full_name: data.full_name,
                         email: data.email,
                         agenda_slug: "agenda_de_antonio",
-                        address: "47568 NW 34ST, 33434 FL, USA",
+                        address: data.address,
                         phone: data.phone
                     },
                     "POST"

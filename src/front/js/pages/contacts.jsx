@@ -9,7 +9,7 @@ const Contactos = () => {
     const [refresh, setRefresh] = useState(false)
     const [estadoTemporal, setEstadotemporal] = useState({})
 
-    useEffect(() => {
+    useEffect(() => { //cuando cargo la página me trae toda la lista
         let funcionCarga = async () => {
             let { respuestaJson, response } = await actions.useFetch("/apis/fake/contact/agenda/agenda_de_antonio", null)
             console.log(respuestaJson)
@@ -34,8 +34,8 @@ const Contactos = () => {
             <div className="row d-flex justify-content-center w-100">
                 <div className="col-12 col-md-8 col-lg-6 w-100 border">
                     <ul className="list-group">
-                        {store.listaContactos && store.listaContactos.length > 0 ? (
-                            store.listaContactos.map((item, index) => {
+                        {lista && lista.length > 0 ? (
+                            lista.map((item, index) => {
                                 return (
                                     <div className="row border-bottom py-3">
                                         <div className="col-2">
@@ -59,7 +59,9 @@ const Contactos = () => {
 
                                                     const nameInput = prompt("Enter new name:", newName);
                                                     if (nameInput !== null && nameInput.trim() !== "") {
-                                                        newName = nameInput;
+                                                        newName = " ";
+                                                    } else {
+                                                        nameInput = newName;
                                                     }
 
                                                     const emailInput = prompt("Enter new email:", newEmail);
