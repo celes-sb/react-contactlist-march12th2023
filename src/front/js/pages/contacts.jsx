@@ -87,9 +87,9 @@ const Contactos = () => {
                                             <button
                                                 className="btn btn-lg m-2 text-danger"
                                                 type="button"
-                                                onClick={() => {
+                                                onClick={async () => {
                                                     if (window.confirm("Are you sure you want to delete this contact?")) {
-                                                        actions.deleteContact(index);
+                                                        actions.useFetch(`/apis/fake/contact/${item.id}`, null, "DELETE");
                                                     }
                                                 }}
                                             >
