@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 const AddContact = () => {
     const { store, actions } = useContext(Context)
     const [data, setData] = useState({
-        full_name: "Dave Bradley",
-        email: "dave@gmail.com",
+        full_name: "",
+        email: "",
         agenda_slug: "agenda_de_antonio",
-        address: "47568 NW 34ST, 33434 FL, USA",
-        phone: "7864445566"
+        address: "",
+        phone: ""
     })
 
     useEffect(() => { }, [data.full_name, data.phone, data.email, data.address])
@@ -24,6 +24,7 @@ const AddContact = () => {
                     className="border mt-2 border-none"
                     placeholder="Enter full name"
                     name="full_name"
+                    required
                     value={data.full_name}
                     onChange={(e) => setData({ ...data, full_name: e.target.value })}
                 />
@@ -33,6 +34,7 @@ const AddContact = () => {
                     className="border mt-2 border-none"
                     placeholder="Enter address"
                     name="address"
+                    required
                     value={data.address}
                     onChange={(e) => setData({ ...data, address: e.target.value })}
                 />
@@ -42,6 +44,8 @@ const AddContact = () => {
                     className="border mt-2 border-none"
                     placeholder="Enter phone number"
                     name="phone"
+                    type="tel"
+                    required
                     value={data.phone}
                     onChange={(e) => setData({ ...data, phone: e.target.value })}
                 />
@@ -51,6 +55,8 @@ const AddContact = () => {
                     className="border mt-2 border-none"
                     placeholder="Enter email"
                     name="email"
+                    type="email"
+                    required
                     value={data.email}
                     onChange={(e) => setData({ ...data, email: e.target.value })}
                 />
@@ -59,35 +65,23 @@ const AddContact = () => {
                 <button
                     className="btn btn-sm mt-3 pb-2 btn-primary"
                     type="button"
-                    onClick={() => {
-                        actions.useFetch("/apis/fake/contact/", data, "POST");
-                    }}
-                >
-                    Save
-                </button>
+                    //onClick={() => {
+                    //    actions.useFetch("/apis/fake/contact/", data, "POST");
+                    //}}
+                    onClick={async () => {
+                        let { respuestaJson, response } = await actions.useFetch("/apis/fake/contact/", data, "POST")
+                        if (!response.ok) {
+                            alert("Oops! Contact not saved")
+                            return
+                        }
+                        console.log("Contact saved: \n", respuestaJson)
+                    }}>Save</button>
             </div>
             <div className="row w-100 text-center">
                 <br />
                 <Link to="/">Return to contact list</Link>
                 <br />
             </div>
-            <button onClick={async () => {
-                let { respuestaJson, response } = await actions.useFetch("/apis/fake/contact/",
-                    {
-                        full_name: data.full_name,
-                        email: data.email,
-                        agenda_slug: "agenda_de_antonio",
-                        address: data.address,
-                        phone: data.phone
-                    },
-                    "POST"
-                )
-                if (!response.ok) {
-                    alert("No se registró el contacto")
-                    return
-                }
-                console.log("Contacto creado: \n", respuestaJson)
-            }}>Boton con fetch</button>
         </div>)
 }
 

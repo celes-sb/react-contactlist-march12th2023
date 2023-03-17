@@ -21,7 +21,6 @@ const Contactos = () => {
 
     useEffect(() => { }, [lista, nombre])
 
-
     return (<>
         <div className="container-fluid ms-2">
             <div className="row p-5">
@@ -43,43 +42,24 @@ const Contactos = () => {
                                         </div>
                                         <div className="col-8">
                                             <h3 className="mb-3">{item.full_name}</h3>
-                                            <p className="text-secondary"><i class="fa-solid fa-location-arrow"></i><span className="ms-3">{item.address}</span></p>
-                                            <p className="text-secondary"><i class="fa-solid fa-at"></i><span className="ms-3">{item.email}</span></p>
-                                            <p className="text-secondary"><i class="fa fa-phone-flip"></i><span className="ms-3">{item.phone}</span></p>
+                                            <p className="text-secondary"><i className="fa-solid fa-location-arrow"></i><span className="ms-3">{item.address}</span></p>
+                                            <p className="text-secondary"><i className="fa-solid fa-at"></i><span className="ms-3">{item.email}</span></p>
+                                            <p className="text-secondary"><i className="fa fa-phone-flip"></i><span className="ms-3">{item.phone}</span></p>
                                         </div>
                                         <div className="col-2 d-flex align-items-center justify-content-end">
                                             <button
                                                 className="btn btn-lg text-success m-2"
                                                 button="button"
                                                 onClick={() => {
-                                                    let newName = newName;
-                                                    let newEmail = newEmail;
-                                                    let newPhoneNumber = newPhoneNumber;
-                                                    let newAddress = newAddress;
+                                                    const { full_name, email, phone, address, id } = item;
+                                                    const newName = prompt("Enter new name:", full_name);
+                                                    const newEmail = prompt("Enter new email:", email);
+                                                    const newPhoneNumber = prompt("Enter new phone number:", phone);
+                                                    const newAddress = prompt("Enter new address:", address);
 
-                                                    const nameInput = prompt("Enter new name:", newName);
-                                                    if (nameInput !== null && nameInput.trim() !== "") {
-                                                        newName = " ";
-                                                    } else {
-                                                        nameInput = newName;
+                                                    if (newName || newEmail || newPhoneNumber || newAddress) {
+                                                        actions.editContact(id, newName || full_name, newEmail || email, newPhoneNumber || phone, newAddress || address);
                                                     }
-
-                                                    const emailInput = prompt("Enter new email:", newEmail);
-                                                    if (emailInput !== null && emailInput.trim() !== "") {
-                                                        newEmail = emailInput;
-                                                    }
-
-                                                    const phoneNumberInput = prompt("Enter new phone number:", newPhoneNumber);
-                                                    if (phoneNumberInput !== null && phoneNumberInput.trim() !== "") {
-                                                        newPhoneNumber = phoneNumberInput;
-                                                    }
-
-                                                    const addressInput = prompt("Enter new address:", newAddress);
-                                                    if (addressInput !== null && addressInput.trim() !== "") {
-                                                        newAddress = addressInput;
-                                                    }
-
-                                                    actions.editContact(index, newName, newEmail, newPhoneNumber, newAddress);
                                                 }}
                                             >
                                                 <i className="fa fa-pencil"></i>
@@ -90,10 +70,12 @@ const Contactos = () => {
                                                 onClick={async () => {
                                                     if (window.confirm("Are you sure you want to delete this contact?")) {
                                                         actions.useFetch(`/apis/fake/contact/${item.id}`, null, "DELETE");
+                                                        const updatedLista = lista.filter((contact) => contact.id !== item.id);
+                                                        setLista(updatedLista);
                                                     }
                                                 }}
                                             >
-                                                <i class="fa-solid fa-trash"></i>
+                                                <i className="fa-solid fa-trash"></i>
                                             </button>
 
                                         </div>
@@ -106,7 +88,7 @@ const Contactos = () => {
                     </ul>
                 </div>
             </div>
-        </div>
+        </div >
     </>)
 }
 
