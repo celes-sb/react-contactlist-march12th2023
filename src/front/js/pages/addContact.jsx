@@ -75,6 +75,7 @@ const AddContact = () => {
                             return
                         }
                         console.log("Contact saved: \n", respuestaJson)
+                        alert("Contact saved \n")
                     }}>Save</button>
             </div>
             <div className="row w-100 text-center">

@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 const Contactos = () => {
     const { store, actions } = useContext(Context)
     const [nombre, setNombre] = useState("")
+    const [email, setEmail] = useState("")
+    const [phone, setPhone] = useState("")
+    const [address, setAddress] = useState("")
     const [lista, setLista] = useState(store.listaContactos)
     const [refresh, setRefresh] = useState(false)
     const [estadoTemporal, setEstadotemporal] = useState({})
@@ -51,15 +54,18 @@ const Contactos = () => {
                                                 className="btn btn-lg text-success m-2"
                                                 button="button"
                                                 onClick={() => {
-                                                    const { full_name, email, phone, address, id } = item;
-                                                    const newName = prompt("Enter new name:", full_name);
-                                                    const newEmail = prompt("Enter new email:", email);
-                                                    const newPhoneNumber = prompt("Enter new phone number:", phone);
-                                                    const newAddress = prompt("Enter new address:", address);
+                                                    console.log(item.full_name);
+                                                    setNombre(prompt("Enter new name:", item.full_name));
+                                                    setEmail(prompt("Enter new email:", item.email));
+                                                    setPhone(prompt("Enter new phone number:", item.phone));
+                                                    setAddress(prompt("Enter new address:", item.address));
 
-                                                    if (newName || newEmail || newPhoneNumber || newAddress) {
-                                                        actions.editContact(id, newName || full_name, newEmail || email, newPhoneNumber || phone, newAddress || address);
-                                                    }
+                                                    /* if (nombre === "" || email === "" || phone === "" || address === "") {
+                                                        alert("El campo no puede estar vacío");
+                                                        return
+                                                    } */
+                                                    actions.editContact(index + 1, nombre, email, phone, address);
+
                                                 }}
                                             >
                                                 <i className="fa fa-pencil"></i>
