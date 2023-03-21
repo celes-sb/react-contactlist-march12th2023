@@ -14,9 +14,10 @@ const Contactos = () => {
 
     useEffect(() => { //cuando cargo la página me trae toda la lista
         let funcionCarga = async () => {
-            let { respuestaJson, response } = await actions.useFetch("/apis/fake/contact/agenda/agenda_de_antonio", null)
-            console.log(respuestaJson)
-            setLista(respuestaJson)
+            // let { respuestaJson, response } = await actions.useFetch("/apis/fake/contact/agenda/agenda_de_antonio", null)
+            // console.log(respuestaJson)
+            // setLista(respuestaJson)
+            actions.funcionCarga()
         }
         funcionCarga() //aquí llamo a la función asíncrono
 
@@ -36,8 +37,8 @@ const Contactos = () => {
             <div className="row d-flex justify-content-center w-100">
                 <div className="col-12 col-md-8 col-lg-6 w-100 border">
                     <ul className="list-group">
-                        {lista && lista.length > 0 ? (
-                            lista.map((item, index) => {
+                        {store.listaContactos && store.listaContactos.length > 0 ? (
+                            store.listaContactos.map((item, index) => {
                                 return (
                                     <div className="row border-bottom py-3">
                                         <div className="col-2">
@@ -55,16 +56,17 @@ const Contactos = () => {
                                                 button="button"
                                                 onClick={() => {
                                                     console.log(item.full_name);
-                                                    setNombre(prompt("Enter new name:", item.full_name));
-                                                    setEmail(prompt("Enter new email:", item.email));
-                                                    setPhone(prompt("Enter new phone number:", item.phone));
-                                                    setAddress(prompt("Enter new address:", item.address));
+                                                    const nombrePrompt = prompt("Enter new name:", item["full_name"]);
+                                                    const emailPrompt = prompt("Enter new email:", item.email);
+                                                    const phonePrompt = prompt("Enter new phone number:", item.phone);
+                                                    const addressPrompt = prompt("Enter new address:", item.address);
 
                                                     /* if (nombre === "" || email === "" || phone === "" || address === "") {
                                                         alert("El campo no puede estar vacío");
                                                         return
                                                     } */
-                                                    actions.editContact(index + 1, nombre, email, phone, address);
+
+                                                    actions.editContact(index, nombrePrompt, emailPrompt, phonePrompt, addressPrompt);
 
                                                 }}
                                             >
@@ -74,11 +76,12 @@ const Contactos = () => {
                                                 className="btn btn-lg m-2 text-danger"
                                                 type="button"
                                                 onClick={async () => {
-                                                    if (window.confirm("Are you sure you want to delete this contact?")) {
+                                                    actions.deleteContact(index);
+                                                    /*if (window.confirm("Are you sure you want to delete this contact?")) {
                                                         actions.useFetch(`/apis/fake/contact/${item.id}`, null, "DELETE");
                                                         const updatedLista = lista.filter((contact) => contact.id !== item.id);
                                                         setLista(updatedLista);
-                                                    }
+                                                    }*/
                                                 }}
                                             >
                                                 <i className="fa-solid fa-trash"></i>

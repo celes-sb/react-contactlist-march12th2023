@@ -10,6 +10,15 @@ export const contactStore = {
 
 export function contactActions(getStore, getActions, setStore) {
     return {
+
+        funcionCarga: async () => {
+            let store = getStore()
+            let actions = getActions()
+            let { respuestaJson, response } = await actions.useFetch("/apis/fake/contact/agenda/agenda_de_antonio", null)
+            console.log(respuestaJson)
+            setStore({ ...store, listaContactos: respuestaJson })
+        },
+
         addContact: async (obj) => {
             let store = getStore()
             let arrTemp = store.listaContactos.slice()
