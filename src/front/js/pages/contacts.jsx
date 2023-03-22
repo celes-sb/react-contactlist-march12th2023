@@ -40,7 +40,7 @@ const Contactos = () => {
                         {store.listaContactos && store.listaContactos.length > 0 ? (
                             store.listaContactos.map((item, index) => {
                                 return (
-                                    <div className="row border-bottom py-3">
+                                    <div key={index} className="row border-bottom py-3">
                                         <div className="col-2">
                                             <img className="img-thumbnail" src="https://cdn140.picsart.com/276225486010201.jpg?type=webp&to=crop&r=256"></img>
                                         </div>
@@ -60,14 +60,14 @@ const Contactos = () => {
                                                     const emailPrompt = prompt("Enter new email:", item.email);
                                                     const phonePrompt = prompt("Enter new phone number:", item.phone);
                                                     const addressPrompt = prompt("Enter new address:", item.address);
-
-                                                    /* if (nombre === "" || email === "" || phone === "" || address === "") {
-                                                        alert("El campo no puede estar vacío");
-                                                        return
-                                                    } */
-
-                                                    actions.editContact(index, nombrePrompt, emailPrompt, phonePrompt, addressPrompt);
-
+                                                    let obj = {
+                                                        "full_name": nombrePrompt,
+                                                        "email": emailPrompt,
+                                                        "agenda_slug": "agenda_de_antonio",
+                                                        "address": addressPrompt,
+                                                        "phone": phonePrompt
+                                                    }
+                                                    actions.putFetch(item.id, obj);
                                                 }}
                                             >
                                                 <i className="fa fa-pencil"></i>

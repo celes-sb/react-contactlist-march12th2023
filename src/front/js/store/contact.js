@@ -15,7 +15,6 @@ export function contactActions(getStore, getActions, setStore) {
             let store = getStore()
             let actions = getActions()
             let { respuestaJson, response } = await actions.useFetch("/apis/fake/contact/agenda/agenda_de_antonio", null)
-            console.log(respuestaJson)
             setStore({ ...store, listaContactos: respuestaJson })
         },
 
@@ -39,7 +38,6 @@ export function contactActions(getStore, getActions, setStore) {
 
             let store = getStore()
             let arrTemp = store.listaContactos.slice()
-            console.log(arrTemp[indice]["full_name"])
 
             arrTemp[indice]["full_name"] = nombre
             arrTemp[indice]["email"] = email
@@ -49,6 +47,33 @@ export function contactActions(getStore, getActions, setStore) {
             setStore({ ...store, listaContactos: arrTemp })
 
         },
+
+        getFetch: async (endpoint) => {
+            let url = "https://assets.breatheco.de/apis/fake/contact/" + endpoint
+            let response = await fetch(url)
+
+            let respuestaJson = await response.json()
+            return { respuestaJson, response }
+        },
+
+        putFetch: async (endpoint, body) => {
+            let actions = getActions()
+            let url = "https://assets.breatheco.de/apis/fake/contact/" + endpoint
+            let response = await fetch(url, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: body ? JSON.stringify(body) : null
+            })
+
+            if (response.ok) {
+                let respuestaJson = await response.json()
+                actions.funcionCarga()
+                return { respuestaJson, response }
+            }
+
+            return null
+        },
+
         peticionEjemplo: async () => {
             let suma = 4
             /* fetch("https://assets.breatheco.de/apis/fake/contact/agenda")
@@ -65,18 +90,11 @@ export function contactActions(getStore, getActions, setStore) {
             let respuesta = await fetch("https://assets.breatheco.de/apis/fake/contact/agenda")
 
             if (respuesta.ok) {
-                console.log("buena respuesta")
                 let respuestaJSON = await respuesta.json() //proceso puede tomar tiempo
-                console.log(respuestaJSON)
-            } else {
-                console.log("mala respuesta")
             }
             //let respuesta2 = await fetch("https://assets.breatheco.de/apis/fake/contact/agenda")
             //respuesta recibe una promesa
             //console.log(respuesta.ok, respuesta.status)
-
-
-
 
             //recibiendo respuestas en paralelo
             /* let respuesta = fetch("https://assets.breatheco.de/apis/fake/contact/agenda")
@@ -109,8 +127,6 @@ export function contactActions(getStore, getActions, setStore) {
 
 
             let respuestaJSON = await respuesta.json()
-            console.log(respuestaJSON)
-
         }
     }
 }

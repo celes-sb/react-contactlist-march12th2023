@@ -60,27 +60,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return { respuestaJson, response }
 
 			},
-			getFetch: async (endpoint) => {
-				let url = "https://assets.breatheco.de" + endpoint
-				let response = await fetch(url)
 
-				let respuestaJson = await response.json()
-				//console.log(respuestaJson)
-				return { respuestaJson, response }
-			},
-
-			putFetch: async (endpoint) => {
-				let url = "https://assets.breatheco.de" + endpoint
-				let response = await fetch(url, {
-					method: "PUT",
-					headers: { "Content-Type": "application/json" },
-					body: body ? JSON.stringify(body) : null
-				})
-
-				let respuestaJson = await response.json()
-
-				return { respuestaJson, response }
-			}
 		}
 	};
 };
