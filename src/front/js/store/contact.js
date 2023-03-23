@@ -27,13 +27,12 @@ export function contactActions(getStore, getActions, setStore) {
 
             return store.listaContactos;
         },
-        deleteContact: (indice) => {
-            let store = getStore()
-            let arrTemp = store.listaContactos.filter((item, index) => {
-                return index != indice
-            })
-            setStore({ ...store, listaContactos: arrTemp })
+        deleteContact: (id) => {
+            let actions = getActions()
+            actions.deleteFetch(id)
+
         },
+
         editContact: (indice, nombre, email, telefono, direccion) => {
 
             let store = getStore()
@@ -63,6 +62,23 @@ export function contactActions(getStore, getActions, setStore) {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: body ? JSON.stringify(body) : null
+            })
+
+            if (response.ok) {
+                let respuestaJson = await response.json()
+                actions.funcionCarga()
+                return { respuestaJson, response }
+            }
+
+            return null
+        },
+
+        deleteFetch: async (endpoint) => {
+            let actions = getActions()
+            let url = "https://assets.breatheco.de/apis/fake/contact/" + endpoint
+            let response = await fetch(url, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" }
             })
 
             if (response.ok) {

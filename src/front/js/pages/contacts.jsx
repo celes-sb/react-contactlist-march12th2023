@@ -76,7 +76,7 @@ const Contactos = () => {
                                                 className="btn btn-lg m-2 text-danger"
                                                 type="button"
                                                 onClick={async () => {
-                                                    actions.deleteContact(index);
+                                                    actions.deleteContact(item.id);
                                                     /*if (window.confirm("Are you sure you want to delete this contact?")) {
                                                         actions.useFetch(`/apis/fake/contact/${item.id}`, null, "DELETE");
                                                         const updatedLista = lista.filter((contact) => contact.id !== item.id);
